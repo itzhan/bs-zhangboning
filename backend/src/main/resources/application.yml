@@ -1,0 +1,46 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: parking-system
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/parking_system?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: ab123168
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deletedAt
+      logic-delete-value: "NOW()"
+      logic-not-delete-value: "NULL"
+
+# JWT 配置
+jwt:
+  secret: ParkingSystem2026SecretKeyForJWTTokenGeneration
+  expiration: 86400000
+
+# 文件上传路径
+file:
+  upload-path: ./uploads/
+
+logging:
+  level:
+    com.parking: debug
