@@ -20,6 +20,11 @@ import { request } from '@/service/request';
 
 defineOptions({ name: 'CouponManage' });
 
+function formatTime(val: any) {
+  if (!val) return '--';
+  return String(val).substring(0, 16);
+}
+
 /* ============ state ============ */
 const loading = ref(false);
 const tableData = ref<any[]>([]);
@@ -87,15 +92,15 @@ const columns: DataTableColumns<any> = [
     render: row => typeDisplay(row.type, row.value)
   },
   { title: '最低金额', key: 'minAmount', minWidth: 90, render: row => `¥${row.minAmount ?? 0}` },
-  { title: '生效时间', key: 'startTime', minWidth: 160 },
-  { title: '失效时间', key: 'endTime', minWidth: 160 },
-  { title: '总量', key: 'total', minWidth: 70 },
-  { title: '已用', key: 'used', minWidth: 70 },
+  { title: '生效时间', key: 'startTime', minWidth: 150, render: (row: any) => formatTime(row.startTime) },
+  { title: '失效时间', key: 'endTime', minWidth: 150, render: (row: any) => formatTime(row.endTime) },
+  { title: '总量', key: 'totalCount', minWidth: 70 },
+  { title: '已用', key: 'usedCount', minWidth: 70 },
   {
     title: '剩余',
     key: 'remaining',
     minWidth: 70,
-    render: row => (row.total ?? 0) - (row.used ?? 0)
+    render: row => (row.totalCount ?? 0) - (row.usedCount ?? 0)
   },
   {
     title: '状态',

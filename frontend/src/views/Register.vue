@@ -86,7 +86,7 @@ async function handleRegister() {
     <div class="register-container">
       <n-card class="register-card" :bordered="false">
         <div class="register-header">
-          <div class="register-logo">🅿</div>
+          <div class="register-logo"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#18a058" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg></div>
           <h2 class="register-title">创建新账号</h2>
           <p class="register-desc">注册后享受便捷停车服务</p>
         </div>

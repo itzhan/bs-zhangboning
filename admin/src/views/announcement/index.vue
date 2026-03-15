@@ -6,6 +6,11 @@ import { request } from '@/service/request';
 
 defineOptions({ name: 'AnnouncementManage' });
 
+function formatTime(val: any) {
+  if (!val) return '--';
+  return String(val).substring(0, 16);
+}
+
 /* ============ state ============ */
 const loading = ref(false);
 const tableData = ref<any[]>([]);
@@ -77,7 +82,8 @@ const columns: DataTableColumns<any> = [
       return h(NTag, { size: 'small', type: s.type }, { default: () => s.label });
     }
   },
-  { title: '发布时间', key: 'publishTime', minWidth: 170 },
+  { title: '发布时间', key: 'publishTime', minWidth: 160, render: (row: any) => formatTime(row.publishTime || row.createdAt) },
+  { title: '创建时间', key: 'createdAt', minWidth: 160, render: (row: any) => formatTime(row.createdAt) },
   {
     title: '操作',
     key: 'actions',

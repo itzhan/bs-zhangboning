@@ -16,6 +16,11 @@ import { request } from '@/service/request';
 
 defineOptions({ name: 'ReservationManage' });
 
+function formatTime(val: any) {
+  if (!val) return '--';
+  return String(val).substring(0, 16);
+}
+
 // ─── 状态定义 ───
 const loading = ref(false);
 const tableData = ref<any[]>([]);
@@ -97,8 +102,8 @@ const columns: DataTableColumns = [
     key: 'timeRange',
     width: 200,
     render(row: any) {
-      const start = row.startTime || row.reserveStartTime || '--';
-      const end = row.endTime || row.reserveEndTime || '--';
+      const start = formatTime(row.startTime || row.reserveStartTime);
+      const end = formatTime(row.endTime || row.reserveEndTime);
       return `${start} ~ ${end}`;
     }
   },
@@ -265,13 +270,13 @@ onMounted(() => {
             {{ detailData.spaceName || '--' }}
           </NDescriptionsItem>
           <NDescriptionsItem label="开始时间" :span="2">
-            {{ detailData.startTime || detailData.reserveStartTime || '--' }}
+            {{ formatTime(detailData.startTime || detailData.reserveStartTime) }}
           </NDescriptionsItem>
           <NDescriptionsItem label="结束时间" :span="2">
-            {{ detailData.endTime || detailData.reserveEndTime || '--' }}
+            {{ formatTime(detailData.endTime || detailData.reserveEndTime) }}
           </NDescriptionsItem>
           <NDescriptionsItem label="创建时间" :span="2">
-            {{ detailData.createTime || detailData.createdAt || '--' }}
+            {{ formatTime(detailData.createTime || detailData.createdAt) }}
           </NDescriptionsItem>
           <NDescriptionsItem v-if="detailData.remark" label="备注" :span="2">
             {{ detailData.remark }}

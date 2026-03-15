@@ -50,7 +50,7 @@ async function handleLogin() {
     <div class="login-container">
       <n-card class="login-card" :bordered="false">
         <div class="login-header">
-          <div class="login-logo">🅿</div>
+          <div class="login-logo"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#18a058" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg></div>
           <h2 class="login-title">景区智能停车引导系统</h2>
           <p class="login-desc">欢迎回来，请登录您的账号</p>
         </div>

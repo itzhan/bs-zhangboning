@@ -95,7 +95,7 @@ const themeOverrides = {
             <!-- Header -->
             <n-layout-header bordered style="height: 64px; padding: 0 24px; display: flex; align-items: center; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.06);">
               <div style="display: flex; align-items: center; cursor: pointer;" @click="router.push('/')">
-                <span style="font-size: 20px; font-weight: 700; color: #18a058; margin-right: 4px;">🅿</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#18a058" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg>
                 <span style="font-size: 18px; font-weight: 600; color: #18a058;">景区智能停车</span>
               </div>
               <n-menu

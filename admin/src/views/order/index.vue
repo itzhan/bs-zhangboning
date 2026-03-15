@@ -17,6 +17,11 @@ import { request } from '@/service/request';
 
 defineOptions({ name: 'OrderManage' });
 
+function formatTime(val: any) {
+  if (!val) return '--';
+  return String(val).substring(0, 16);
+}
+
 // ─── 状态定义 ───
 const loading = ref(false);
 const tableData = ref<any[]>([]);
@@ -100,14 +105,14 @@ const columns: DataTableColumns = [
   {
     title: '入场时间',
     key: 'entryTime',
-    width: 160,
-    render: (row: any) => row.entryTime || row.enterTime || '--'
+    width: 150,
+    render: (row: any) => formatTime(row.entryTime || row.enterTime)
   },
   {
     title: '出场时间',
     key: 'exitTime',
-    width: 160,
-    render: (row: any) => row.exitTime || '--'
+    width: 150,
+    render: (row: any) => formatTime(row.exitTime)
   },
   {
     title: '时长(分钟)',
@@ -331,10 +336,10 @@ onMounted(() => {
             {{ detailData.spaceNo || detailData.parkingSpaceNo || '--' }}
           </NDescriptionsItem>
           <NDescriptionsItem label="入场时间">
-            {{ detailData.entryTime || detailData.enterTime || '--' }}
+            {{ formatTime(detailData.entryTime || detailData.enterTime) }}
           </NDescriptionsItem>
           <NDescriptionsItem label="出场时间">
-            {{ detailData.exitTime || '--' }}
+            {{ formatTime(detailData.exitTime) }}
           </NDescriptionsItem>
           <NDescriptionsItem label="停车时长">
             {{ detailData.duration ?? detailData.parkingDuration ?? '--' }} 分钟
@@ -356,10 +361,10 @@ onMounted(() => {
             {{ ['微信', '支付宝', '现金', '其他'][detailData.paymentMethod] || '--' }}
           </NDescriptionsItem>
           <NDescriptionsItem v-if="detailData.paymentTime" label="支付时间" :span="2">
-            {{ detailData.paymentTime }}
+            {{ formatTime(detailData.paymentTime) }}
           </NDescriptionsItem>
           <NDescriptionsItem label="创建时间" :span="2">
-            {{ detailData.createTime || detailData.createdAt || '--' }}
+            {{ formatTime(detailData.createTime || detailData.createdAt) }}
           </NDescriptionsItem>
           <NDescriptionsItem v-if="detailData.remark" label="备注" :span="2">
             {{ detailData.remark }}

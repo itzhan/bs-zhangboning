@@ -1,6 +1,6 @@
 const local: App.I18n.Schema = {
   system: {
-    title: 'Soybean 管理系统',
+    title: '景区停车引导系统',
     updateTitle: '系统版本更新通知',
     updateContent: '检测到系统有新版本发布，是否立即刷新页面？',
     updateConfirm: '立即刷新',
@@ -287,32 +287,32 @@ const local: App.I18n.Schema = {
     },
     home: {
       branchDesc:
-        '为了方便大家开发和更新合并，我们对main分支的代码进行了精简，只保留了首页菜单，其余内容已移至example分支进行维护。预览地址显示的内容即为example分支的内容。',
-      greeting: '早安，{userName}, 今天又是充满活力的一天!',
-      weatherDesc: '今日多云转晴，20℃ - 25℃!',
-      projectCount: '项目数',
-      todo: '待办',
-      message: '消息',
-      downloadCount: '下载量',
-      registerCount: '注册量',
-      schedule: '作息安排',
-      study: '学习',
-      work: '工作',
-      rest: '休息',
-      entertainment: '娱乐',
-      visitCount: '访问量',
-      turnover: '成交额',
-      dealCount: '成交量',
+        '景区停车引导系统管理后台，提供停车场管理、订单管理、数据统计等功能，助力景区智慧停车运营。',
+      greeting: '您好，{userName}，欢迎回到景区停车引导系统管理后台！',
+      weatherDesc: '系统运行正常，一切就绪！',
+      projectCount: '停车场数',
+      todo: '待处理订单',
+      message: '申诉消息',
+      downloadCount: '今日入场',
+      registerCount: '注册用户',
+      schedule: '运营时段',
+      study: '早高峰',
+      work: '日间运营',
+      rest: '午间低峰',
+      entertainment: '晚间运营',
+      visitCount: '今日车流',
+      turnover: '今日营收',
+      dealCount: '今日订单',
       projectNews: {
-        title: '项目动态',
+        title: '系统动态',
         moreNews: '更多动态',
-        desc1: 'Soybean 在2021年5月28日创建了开源项目 soybean-admin!',
-        desc2: 'Yanbowe 向 soybean-admin 提交了一个bug，多标签栏不会自适应。',
-        desc3: 'Soybean 准备为 soybean-admin 的发布做充分的准备工作!',
-        desc4: 'Soybean 正在忙于为soybean-admin写项目说明文档！',
-        desc5: 'Soybean 刚才把工作台页面随便写了一些，凑合能看了！'
+        desc1: '景区停车引导系统正式上线，支持10个停车场的智能管理。',
+        desc2: '新增在线预约功能，游客可提前预约景区停车位。',
+        desc3: '优惠券系统已上线，支持满减和固定金额两种类型。',
+        desc4: '黑名单功能已完善，可自动识别并拦截违规车辆。',
+        desc5: '仪表盘数据看板已升级，支持实时营收和占用率统计。'
       },
-      creativity: '创意'
+      creativity: '智慧停车'
     }
   },
   form: {

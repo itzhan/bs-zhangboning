@@ -6,6 +6,11 @@ import { request } from '@/service/request';
 
 defineOptions({ name: 'PaymentManage' });
 
+function formatTime(val: any) {
+  if (!val) return '-';
+  return String(val).substring(0, 16);
+}
+
 /* ============ state ============ */
 const loading = ref(false);
 const tableData = ref<any[]>([]);
@@ -65,8 +70,8 @@ const columns: DataTableColumns<any> = [
       return h(NTag, { size: 'small', type: s.type }, { default: () => s.label });
     }
   },
-  { title: '支付时间', key: 'paidAt', minWidth: 170,
-    render: row => row.paidAt || row.createdAt || '-'
+  { title: '支付时间', key: 'paidAt', minWidth: 160,
+    render: row => formatTime(row.paidAt || row.createdAt)
   }
 ];
 
