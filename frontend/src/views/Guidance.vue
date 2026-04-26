@@ -13,23 +13,39 @@ import {
 
 const router = useRouter()
 
-// 景区景点（示例 POI，对应模拟数据中的洛阳景区）
-const scenicSpots = [
-  { label: '龙门石窟（主景区入口）', value: 'longmen', lng: 112.4659, lat: 34.5586 },
-  { label: '白马寺', value: 'baima', lng: 112.5946, lat: 34.7234 },
-  { label: '关林庙', value: 'guanlin', lng: 112.4540, lat: 34.6133 },
-  { label: '隋唐遗址公园（应天门）', value: 'suitang', lng: 112.4308, lat: 34.6420 },
-  { label: '洛阳古城丽景门', value: 'gucheng', lng: 112.4671, lat: 34.6820 },
-  { label: '老君山景区', value: 'laojun', lng: 111.6356, lat: 33.7654 }
-]
+interface ScenicSpot {
+  id: number
+  name: string
+  longitude: number | string
+  latitude: number | string
+  description?: string
+  image?: string
+  radiusKm?: number | string
+  nearbyLotCount?: number
+  nearbyAvailableSpaces?: number
+  nearbyTotalSpaces?: number
+}
 
-const selectedSpot = ref<string>('longmen')
+const scenicSpots = ref<ScenicSpot[]>([])
+const selectedSpot = ref<number | null>(null)
+const loadingSpots = ref(false)
+
+// 下拉选项：显示名称 + 实时附近车位
+const spotOptions = computed(() =>
+  scenicSpots.value.map((s) => ({
+    label: `${s.name}（附近 ${s.nearbyAvailableSpaces ?? 0}/${s.nearbyTotalSpaces ?? 0} 车位）`,
+    value: s.id
+  }))
+)
 const lots = ref<any[]>([])
 const loading = ref(false)
 
-const currentSpot = computed(
-  () => scenicSpots.find((s) => s.value === selectedSpot.value) ?? scenicSpots[0]!
-)
+const currentSpot = computed(() => {
+  const spot = scenicSpots.value.find((s) => s.id === selectedSpot.value)
+    ?? scenicSpots.value[0]
+  if (!spot) return null
+  return { ...spot, lng: Number(spot.longitude), lat: Number(spot.latitude) }
+})
 
 // 简化版距离估算（球面近似，单位：km）
 function haversine(lat1: number, lng1: number, lat2: number, lng2: number) {
@@ -46,6 +62,7 @@ function haversine(lat1: number, lng1: number, lat2: number, lng2: number) {
 // 智能引导评分：可用率 70% + 距离 30%
 const recommendations = computed(() => {
   const spot = currentSpot.value
+  if (!spot) return []
   return lots.value
     .map((lot) => {
       const total = lot.totalSpaces ?? lot.total_spaces ?? 0
@@ -80,13 +97,34 @@ async function fetchLots() {
   }
 }
 
+async function fetchSpots() {
+  loadingSpots.value = true
+  try {
+    const res: any = await get('/api/public/scenic-spots')
+    const data = res.data || res
+    const list = Array.isArray(data) ? data : (data.list || data.records || [])
+    scenicSpots.value = Array.isArray(list) ? list : []
+    if (scenicSpots.value.length > 0 && selectedSpot.value == null) {
+      selectedSpot.value = scenicSpots.value[0]!.id
+    }
+  } catch {
+    scenicSpots.value = []
+  } finally {
+    loadingSpots.value = false
+  }
+}
+
 function navigateTo(lot: any) {
   const lng = lot.longitude || lot.lng
   const lat = lot.latitude || lot.lat
   const spot = currentSpot.value
+  if (!spot) {
+    window.$message?.warning('请先选择目的景点')
+    return
+  }
   if (lng && lat) {
     // 路径规划：从停车场到景点
-    const url = `https://uri.amap.com/navigation?from=${lng},${lat},${encodeURIComponent(lot.name || '停车场')}&to=${spot.lng},${spot.lat},${encodeURIComponent(spot.label)}&mode=car&policy=1&src=parkguide&coordinate=gaode&callnative=0`
+    const url = `https://uri.amap.com/navigation?from=${lng},${lat},${encodeURIComponent(lot.name || '停车场')}&to=${spot.lng},${spot.lat},${encodeURIComponent(spot.name)}&mode=car&policy=1&src=parkguide&coordinate=gaode&callnative=0`
     window.open(url, '_blank')
   } else {
     window.$message?.warning('该停车场暂无坐标信息')
@@ -102,6 +140,7 @@ function goDetail(lot: any) {
 }
 
 onMounted(() => {
+  fetchSpots()
   fetchLots()
 })
 </script>
@@ -123,8 +162,11 @@ onMounted(() => {
             <span class="selector-label">目的地：</span>
             <n-select
               v-model:value="selectedSpot"
-              :options="scenicSpots"
-              style="width: 220px;"
+              :options="spotOptions"
+              :loading="loadingSpots"
+              :disabled="loadingSpots || scenicSpots.length === 0"
+              placeholder="请选择景点"
+              style="width: 320px;"
             />
           </div>
         </div>
@@ -148,7 +190,14 @@ onMounted(() => {
               <template #icon><n-icon :component="FlashOutline" /></template>
               系统推荐
             </n-tag>
-            <span class="best-tip">基于实时空位与到 {{ currentSpot.label }} 的距离综合评估</span>
+            <span class="best-tip">
+              基于实时空位与到 <b>{{ currentSpot?.name }}</b> 的距离综合评估
+              <template v-if="currentSpot">
+                · 该景点附近共 <b>{{ currentSpot.nearbyLotCount ?? 0 }}</b> 个停车场，
+                实时可用 <b style="color: #18a058;">{{ currentSpot.nearbyAvailableSpaces ?? 0 }}</b> /
+                {{ currentSpot.nearbyTotalSpaces ?? 0 }} 个车位
+              </template>
+            </span>
           </div>
           <div class="best-body">
             <div class="best-info">

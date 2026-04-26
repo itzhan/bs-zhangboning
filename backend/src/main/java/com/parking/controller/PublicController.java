@@ -4,10 +4,12 @@ import com.parking.common.result.PageResult;
 import com.parking.common.result.Result;
 import com.parking.dto.response.AnnouncementResponse;
 import com.parking.dto.response.ParkingLotResponse;
+import com.parking.dto.response.ScenicSpotResponse;
 import com.parking.entity.Coupon;
 import com.parking.service.AnnouncementService;
 import com.parking.service.CouponService;
 import com.parking.service.ParkingLotService;
+import com.parking.service.ScenicSpotService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class PublicController {
     private final AnnouncementService announcementService;
     private final ParkingLotService parkingLotService;
     private final CouponService couponService;
+    private final ScenicSpotService scenicSpotService;
 
     @ApiOperation("获取已发布的公告列表")
     @GetMapping("/announcements")
@@ -55,6 +58,13 @@ public class PublicController {
     @GetMapping("/coupons")
     public Result<List<Coupon>> getAvailableCoupons() {
         List<Coupon> data = couponService.getAvailable();
+        return Result.success(data);
+    }
+
+    @ApiOperation("获取景区景点列表（含附近停车场实时统计）")
+    @GetMapping("/scenic-spots")
+    public Result<List<ScenicSpotResponse>> getScenicSpots() {
+        List<ScenicSpotResponse> data = scenicSpotService.getAllWithRealtime();
         return Result.success(data);
     }
 }

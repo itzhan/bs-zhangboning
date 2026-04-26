@@ -289,7 +289,27 @@ CREATE TABLE `announcement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='公告表';
 
 -- ----------------------------
--- 14. 操作日志表
+-- 14. 景区景点表（用于智能引导）
+-- ----------------------------
+DROP TABLE IF EXISTS `scenic_spot`;
+CREATE TABLE `scenic_spot` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '景点ID',
+    `name` VARCHAR(100) NOT NULL COMMENT '景点名称',
+    `longitude` DECIMAL(10,7) NOT NULL COMMENT '经度',
+    `latitude` DECIMAL(10,7) NOT NULL COMMENT '纬度',
+    `description` VARCHAR(500) DEFAULT '' COMMENT '景点简介',
+    `image` VARCHAR(500) DEFAULT '' COMMENT '景点图片',
+    `radius_km` DECIMAL(5,2) NOT NULL DEFAULT 5.00 COMMENT '附近停车场判定半径（公里）',
+    `sort_order` INT NOT NULL DEFAULT 0 COMMENT '排序值（升序）',
+    `status` TINYINT NOT NULL DEFAULT 1 COMMENT '状态: 0-禁用, 1-启用',
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='景区景点表';
+
+-- ----------------------------
+-- 15. 操作日志表
 -- ----------------------------
 DROP TABLE IF EXISTS `operation_log`;
 CREATE TABLE `operation_log` (
