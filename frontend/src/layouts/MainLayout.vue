@@ -18,6 +18,7 @@ import type { MenuOption } from 'naive-ui'
 import {
   HomeOutline,
   CarOutline,
+  CompassOutline,
   MegaphoneOutline,
   PersonCircleOutline,
   LogOutOutline,
@@ -37,6 +38,7 @@ const userStore = useUserStore()
 const activeKey = computed(() => {
   const path = route.path
   if (path.startsWith('/parking-lots')) return '/parking-lots'
+  if (path.startsWith('/guidance')) return '/guidance'
   if (path === '/home' || path === '/') return '/home'
   return path
 })
@@ -52,6 +54,11 @@ const menuOptions: MenuOption[] = [
     label: () => h(RouterLink, { to: '/parking-lots' }, { default: () => '停车场' }),
     key: '/parking-lots',
     icon: () => h(NIcon, null, { default: () => h(CarOutline) })
+  },
+  {
+    label: () => h(RouterLink, { to: '/guidance' }, { default: () => '智能引导' }),
+    key: '/guidance',
+    icon: () => h(NIcon, null, { default: () => h(CompassOutline) })
   },
   {
     label: () => h(RouterLink, { to: '/announcements' }, { default: () => '公告' }),

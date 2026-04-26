@@ -9,11 +9,11 @@ import {
   SearchOutline,
   CalendarOutline,
   QrCodeOutline,
-  CardOutline,
   LocationOutline,
   TimeOutline,
   MegaphoneOutline,
-  CarSportOutline
+  CarSportOutline,
+  CompassOutline
 } from '@vicons/ionicons5'
 
 const router = useRouter()
@@ -24,10 +24,10 @@ const loadingLots = ref(false)
 const loadingAnnouncements = ref(false)
 
 const features = [
-  { title: '实时车位查询', desc: '随时查看景区各停车场实时空位信息', icon: SearchOutline, color: '#18a058' },
-  { title: '在线预约车位', desc: '提前预约车位，出行无忧', icon: CalendarOutline, color: '#2080f0' },
-  { title: '扫码快速入场', desc: '扫码即入，告别排队等候', icon: QrCodeOutline, color: '#f0a020' },
-  { title: '在线便捷支付', desc: '多种支付方式，快速缴费离场', icon: CardOutline, color: '#d03050' },
+  { title: '智能引导推荐', desc: '按景点位置与实时空位推荐最优停车场', icon: CompassOutline, color: '#18a058', to: '/guidance' },
+  { title: '实时车位查询', desc: '随时查看景区各停车场实时空位信息', icon: SearchOutline, color: '#2080f0', to: '/parking-lots' },
+  { title: '在线预约车位', desc: '提前预约车位，出行无忧', icon: CalendarOutline, color: '#f0a020', to: '/reservation' },
+  { title: '扫码快速入场', desc: '扫码即入，告别排队等候', icon: QrCodeOutline, color: '#d03050', to: '/parking-lots' },
 ]
 
 function getAvailableColor(available: number, total: number) {
@@ -125,7 +125,7 @@ onMounted(() => {
         <h2 class="section-title">服务特色</h2>
         <n-grid :cols="4" :x-gap="20" :y-gap="20" responsive="screen" item-responsive>
           <n-gi v-for="f in features" :key="f.title" span="4 m:2 l:1">
-            <n-card hoverable class="feature-card">
+            <n-card hoverable class="feature-card" @click="f.to && router.push(f.to)">
               <div style="text-align: center;">
                 <div class="feature-icon" :style="{ background: f.color + '15', color: f.color }">
                   <n-icon :component="f.icon" :size="32" />
